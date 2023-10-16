@@ -11,7 +11,6 @@ import java.util.List;
 public class PageResponseDTO {
     private List<KmProductDTO> dtoList;
     private List<KmProductReviewDTO> reviewDtoList;
-    private List<KmCsNoticeDTO> NoticeDTOList;
     private int cate;
     private int pg;
     private int size;
