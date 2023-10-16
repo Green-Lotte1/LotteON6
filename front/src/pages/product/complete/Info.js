@@ -33,7 +33,7 @@ function Info({completeList, completeTotal}) {
                                     </article>
                                 </td>
                                 <td>{item.price.toLocaleString()}원</td>
-                                <td>{item.discount !== 0 ? item.discount.toLocaleString() : '-'}</td>
+                                <td>{item.price !== item.total ? (item.total-item.price).toLocaleString() : '-'}</td>
                                 <td>{item.count}</td>
                                 <td>{item.total.toLocaleString()}</td>
                             </tr>

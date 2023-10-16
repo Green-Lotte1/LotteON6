@@ -3,6 +3,8 @@ import {useNavigate} from "react-router-dom";
 
 function Receipt({orderEnd, usePoint, orderProducts}) {
     let navigate = useNavigate();
+    console.log(orderProducts)
+    console.log(orderEnd)
     return <>
         <div className="final" style={{height: 'auto'}}>
             <h2>최종결제 정보</h2>
@@ -10,7 +12,7 @@ function Receipt({orderEnd, usePoint, orderProducts}) {
                 <tbody>
                     <tr>
                         <td>상품수</td>
-                        <td>{orderEnd.ordPrice}</td>
+                        <td>{orderEnd.ordCount}</td>
                     </tr>
                     <tr>
                         <td>상품금액</td>
