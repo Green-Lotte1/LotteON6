@@ -44,7 +44,7 @@ function Receipt({orderEnd, usePoint, orderProducts}) {
                         : null}
                     <tr>
                         <td>전체주문금액</td>
-                        <td>{orderEnd.ordTotTotal.toLocaleString()}</td>
+                        <td>{orderEnd.ordTotPrice.toLocaleString()}</td>
                     </tr>
                 </tbody>
             </table>

@@ -22,7 +22,7 @@ function Order() {
         ordDiscount: newOrderTotal.totalDiscountPrice,
         ordDelivery: newOrderTotal.totalDelivery,
         savePoint: newOrderTotal.totalPoint,
-        ordTotTotal: newOrderTotal.totalOrderPrice,
+        ordTotPrice: newOrderTotal.totalOrderPrice,
         ordComplete: 1,
         ordPayment: 0,
         usedPoint: 0,

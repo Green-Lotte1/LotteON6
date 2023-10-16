@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom";
-
+export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
+export const HOME_URL = process.env.REACT_APP_HOME_URL;
 function OrderProducts({orderProducts}) {
     let navigate = useNavigate();
 
@@ -25,12 +26,12 @@ function OrderProducts({orderProducts}) {
                     return <tr key={item.cartNo}>
                         <td>
                             <article>
-                                <a onClick={()=>{navigate(process.env.PUBLIC_URL + "/product/view?prodNo=" + item.prodNo)}}
+                                <a onClick={()=>{navigate(HOME_URL + "/product/view?prodNo=" + item.prodNo)}}
                                    style={{cursor:'pointer'}}
                                 ><img
                                     src="https://via.placeholder.com/80x80" alt={item.prodName}/></a>
                                 <div>
-                                    <h2><a onClick={()=>{navigate(process.env.PUBLIC_URL + "/product/view?prodNo=" + item.prodNo)}}
+                                    <h2><a onClick={()=>{navigate(HOME_URL + "/product/view?prodNo=" + item.prodNo)}}
                                            style={{cursor:'pointer'}}>{item.prodName}</a></h2>
                                     <p>{item.descript}</p>
                                 </div>
