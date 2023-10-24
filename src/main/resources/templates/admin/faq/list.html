@@ -4,78 +4,113 @@
       xmlns:layout="http://www.thymeleaf.org/"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+    <script th:inline="javascript">
+        function filterTable() {
+            var selectedValueCate = document.getElementById("searchCate1").value;
+            var selectedValueType = document.getElementById("searchCate2").value;
+            var rows = document.getElementById("noticeTable").getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var cellsCate = rows[i].getElementsByTagName("td")[1];
+                var cellsType = rows[i].getElementsByTagName("td")[2];
+
+                if (cellsCate && cellsType) {
+                    var cellValueCate = cellsCate.textContent || cellsCate.innerText;
+                    var cellValueType = cellsType.textContent || cellsType.innerText;
+
+                    if (cellValueCate === selectedValueCate && cellValueType === selectedValueType) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        function confirmDelete() {
+            if (confirm("게시글을 삭제하시겠습니까?")) {
+                // 여기에 삭제 동작을 수행하는 코드를 추가합니다.
+                // 예를 들어, AJAX 요청을 통해 서버로 삭제를 요청하거나, 폼을 제출하여 처리할 수 있습니다.
+                // 이 예제에서는 AJAX 요청을 사용하지 않고 간단히 URL로 이동하는 예제를 보여드립니다.
+                window.location.href = "/your-delete-url";
+            }
+        }
+    </script>
+
     <head>
-        <div th:replace="/admin/header.html :: header"></div>
-    </head>
-    <main>
-        <div th:replace="/admin/aside.html :: aside"></div>
-        <section id="admin-product-list">
-            <nav>
-                <h3>공지사항 목록</h3>
-                <p>
-                    HOME > 고객센터 > <strong>공지사항</strong>
-                </p>
-            </nav>
+    <div th:replace="/admin/header.html :: header"></div>
+</head>
+<body>
+<main>
+    <div th:replace="/admin/aside.html :: aside"></div>
+    <section id="admin-product-list">
+        <nav>
+            <h3>자주묻는질문 목록</h3>
+            <p>
+                HOME > 고객센터 > <strong>자주묻는질문</strong>
+            </p>
+        </nav>
 
-            <!-- 상품목록 컨텐츠 시작 -->
-            <section>
-
-                <form th:action="@{/admin/cs/notice/delete.do}" method="post">
+        <!-- 상품목록 컨텐츠 시작 -->
+        <section>
+            <form action="#" method="post">
+                <div>
                     <div>
-                        <select name="searchCate1" id="searchCate1">
-                            <option value="">유형선택</option>
+                        <select name="searchCate1" id="searchCate1" onchange="filterTable()">
+                            <option value="" selected disabled>1차 선택</option>
+                            <option th:each="dto : ${(distinctCate)}" th:value="${dto.cate}" th:text="${dto.cate}"></option>
                         </select>
-                        <input type="text" name="searchKeyword" id="searchKeyword" value="" placeholder="검색어를 입력하세요." >
-                        <input type="hidden" name="searchPg" id="searchPg">
+                        <select name="searchCate2" id="searchCate2">
+                            <option value="" selected disabled>2차 선택</option>
+                            <option th:each="dto : ${(distinctCate)}" th:value="${dto.type}" th:text="${dto.type}"></option>
+                        </select>
                     </div>
-                    <table class="listTable">
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" name="all"/></th>
-                                <th>번호</th>
-                                <th>유형</th>
-                                <th>제목</th>
-                                <th>조회</th>
-                                <th>날짜</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody class="listTbody">
-                            <th:each var="dto" items="">
-                                <tr>
-                                    <td><input type="checkbox" name="chk" value="${dto.noticeNo}"/></td>
-                                    <td>글 번호</td>
-                                    <td>분류 유형</td>
-                                    <td><a th:href="@{/admin/cs/notice/view.do?no=${dto.noticeNo}}">[ ${dto.c2Name} ] ${dto.title}</a></td>
-                                    <td>조회수</td>
-                                    <td>작성 날짜</td>
-                                    <td>
-                                        <a th:href="@{/admin/cs/notice/delete.do}" class="noticeDelete">[삭제]</a>
-                                        <br/>
-                                        <a th:href="@{/admin/cs/notice/update.do}" class="noticeUpdate">[수정]</a>
-                                    </td>
-                                </tr>
-                            </th:each>
-                            <th:if test="${fn:length(noticeList) eq 0}">
-                                <tr>
-                                    <td colspan="7">
-                                        조회 결과가 없습니다.
-                                    </td>
-                                </tr>
-                            </th:if>
-                        </tbody>
-                    </table>
 
-
-                    <input type="submit" value="선택삭제" class="deleteAll" />
-                    <a th:href="@{/admin/cs/notice/write.do}" class="writeBtn">작성하기</a>
-                </form>
-            </section>
-
-
-
-            <!-- 상품목록 컨텐츠 끝 -->
+                </div>
+                <table class="listTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all"/></th>
+                        <th>번호</th>
+                        <th>유형</th>
+                        <th>제목</th>
+                        <th>조회</th>
+                        <th>날짜</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody class="listTbody">
+                    <tr th:each="dto : ${faq}">
+                        <td><input type="checkbox" name="chk"/></td>
+                        <td th:text="${dto.cate}"></td>
+                        <td th:text="${dto.type}"></td>
+                        <td><a th:href="@{/admin/cs/notice/view(pg=${dto.faqNo})}" th:text="${dto.title}"></a></td>
+                        <td th:text="${dto.hit}"></td>
+                        <td th:text="${#temporals.format(dto.rdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <a th:href="@{/admin/cs/faq/delete}" class="noticeDelete">[삭제]</a>
+                            <br/>
+                            <a th:href="@{/admin/cs/faq/update}" class="noticeUpdate">[수정]</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <button class="deleteAll" onclick="confirmDelete()" th:onclick="|window.location.href=@{/admin/cs/faq/delete}|">
+                        선택삭제
+                    </button>
+                    <div>
+                        <button class="writeBtn" th:onclick="|window.location.href=@{/admin/cs/faq/write}|">
+                            작성하기
+                        </button>
+                    </div>
+                </div>
+            </form>
         </section>
-    </main>
-    <div th:replace="/admin/footer.html :: footer"></div>
+    </section>
+</main>
+<div th:replace="/admin/footer.html :: footer"></div>
+</body>
 </html>

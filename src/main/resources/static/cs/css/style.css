@@ -627,6 +627,11 @@ footer p > strong {
   font-size: 32px;
   font-weight: bold;
 }
+#cs > .notice > .view > article > nav > .title > span {
+  margin-bottom: 6px;
+  font-size: 32px;
+  font-weight: bold;
+}
 
 #cs > .notice > .view > article > nav > .date {
   font-size: 14px;
@@ -989,6 +994,9 @@ footer p > strong {
   font-size: 14px;
 }
 #cs > .qna > .list > article > table a {
+  font-size: 16px;
+}
+#cs > .qna > .list > article > table a span {
   font-size: 16px;
 }
 

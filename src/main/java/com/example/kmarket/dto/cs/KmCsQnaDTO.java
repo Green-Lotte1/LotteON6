@@ -21,20 +21,12 @@ public class KmCsQnaDTO {
 	private String file3;
 	private String file4;
 	private String writer;
-	private String ordNo; //null 값 넣기 위해 String으로 변경 
-	private String prodNo;
-	private int parent;
-	private int answerComplete;
 	private String regip;
+	private int answerComplete;
 	private LocalDateTime rdate;
-	
+	private String answer;
 	//추가 필드
 	private String writerName;
 	private String cateName;
 	private String typeName;
-	private String writerMarking;
-	private LocalDateTime rdateSub;
-
-	
-	
 }

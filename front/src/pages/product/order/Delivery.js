@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {paste} from "@testing-library/user-event/dist/paste";
-import DaumPost from "./DaumPost";
+import DaumPost from "../../../store/DaumPost";
 function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
 
     const [formattedPhoneNumber, setFormattedPhoneNumber] = useState(
@@ -8,16 +7,11 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
     );
 
     /*휴대폰 번호 자동 하이픈*/
-    const handlePhoneNumberChange = (e) => {
-        const rawPhoneNumber = e.target.value.replace(/-/g, ''); // 기존 하이픈 제거
-        const formattedPhoneNumber = autoHyphen(rawPhoneNumber);
-        setFormattedPhoneNumber(formattedPhoneNumber); // 상태 업데이트
-        changeOrderEnd('recipHp', formattedPhoneNumber)
-    };
-
     const autoHyphen = (value) => {
+
+        const rawPhoneNumber = value.replace(/-/g, ''); // 기존 하이픈 제거
         // 숫자 이외의 문자와 기존 하이픈 제거
-        const rawValue = value.replace(/[^0-9]/g, '');
+        const rawValue = rawPhoneNumber.replace(/[^0-9]/g, '');
 
         if(rawValue.length === 12) {
             return formattedPhoneNumber
@@ -31,8 +25,10 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
             formattedPhoneNumber2 += rawValue[i];
         }
 
-
+        changeOrderEnd('recipHp', formattedPhoneNumber2)
+        setFormattedPhoneNumber(formattedPhoneNumber2); // 상태 업데이트
         return formattedPhoneNumber2;
+
     };
 
     const handleInputChange = (event, key) => {
@@ -57,11 +53,16 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
         changeOrderEnd('recipAddr1', postDTO.addr1)
         changeOrderEnd('recipAddr2', postDTO.addr2)
     }, [postDTO]);
+
+    function detailPostHandle(e){
+        handleInputChange(e, 'recipAddr2')
+        changePostDTO('addr2',e.target.value)
+    }
     return <>
 
         <article className="delivery">
             {postOn&&<>
-                <DaumPost changePostDTO={changePostDTO} setPostOn={setPostOn}></DaumPost>
+                <DaumPost setPostDTO={setPostDTO} setPostOn={setPostOn}></DaumPost>
             </>}
 
             <h1>배송정보</h1>
@@ -70,6 +71,11 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
                     <tr>
                         <td>주문자</td>
                         <td><input type="text" name="orderer" value={member.name}
+                        /></td>
+                    </tr>
+                    <tr>
+                        <td>수령자</td>
+                        <td><input type="text" name="orderer" value={orderEnd.recipName}
                                    onChange={(e) => {
                                        handleInputChange(e, 'recipName')
                                    }}
@@ -82,9 +88,8 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
                                 type="text"
                                 name="hp"
                                 value={formattedPhoneNumber}
-                                onChange={handlePhoneNumberChange}
+                                onChange={(e) => autoHyphen(e.target.value)}
                             />
-                            <span>- 포함 입력</span>
                         </td>
                     </tr>
                     <tr>
@@ -92,9 +97,10 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
                         <td>
                             <input type="text" name="zip" value={postDTO.zip} readOnly
                                    onChange={(e) => {
-
+                                       handleInputChange(e, 'recipZip')
                                    }}/>
                             <input type="button"
+                                   style={{marginLeft: '5px'}}
                                    onClick={()=>{
                                        setPostOn(!postOn)
                                    }}
@@ -116,7 +122,7 @@ function Delivery({member, changeOrderEnd, orderEnd, changeMemeber}) {
                         <td>
                             <input type="text" name="addr2" defaultValue={postDTO.addr2}
                                    onChange={(e) => {
-                                       handleInputChange(e, 'recipAddr2')
+                                       detailPostHandle(e)
                                    }}/>
                         </td>
                     </tr>

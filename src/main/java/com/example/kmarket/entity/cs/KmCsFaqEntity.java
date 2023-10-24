@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
-@ToString
+@ToString(exclude = {"kmCsCateEntity", "kmCsTypeEntity", "kmCsQnaEntity"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -17,14 +17,19 @@ public class KmCsFaqEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int faqNo;
-	private String cate;
-	private int type;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cate")
+	private KmCsCateEntity kmCsCateEntity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "type")
+	private KmCsTypeEntity kmCsTypeEntity;
 	private String title;
 	private String content;
 	private int relatedFaq;
 	private String writer;
 	private String regip;
-
+	private int hit;
 	@CreationTimestamp
 	private LocalDateTime rdate;
 
